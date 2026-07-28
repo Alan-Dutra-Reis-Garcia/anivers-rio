@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feliz Aniversário, Tatiane! 🎁</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #fd79a8;
+            --bg-color: #0c0c0c;
+            --card-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --accent-color: #00cec9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            z-index: 10;
+            position: relative;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            line-height: 1.1;
+        }
+
+        .name-highlight {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        p.subtitle {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+
+        .scratch-wrapper {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid rgba(108, 92, 231, 0.3);
+            background: #2d2d2d;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .scratch-value {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            font-size: 3rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 15px rgba(0, 206, 201, 0.6);
+            z-index: 1;
+            user-select: none;
+        }
+        
+        .scratch-value span { font-size: 1.2rem; font-weight: 600; color: #fff; }
+
+        canvas#scratch-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        #pix-form {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            background-color: #2d2d2d;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
+        }
+
+        button.btn-resgatar {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button.btn-resgatar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+        }
+
+        #success-message {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+            color: var(--accent-color);
+            background: rgba(0, 206, 201, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--accent-color);
+        }
+
+        #success-message h2 { font-size: 1.5rem; margin-bottom: 10px; }
+        #success-message p { font-size: 0.95rem; color: #fff; line-height: 1.4; }
+
+    </style>
+</head>
+<body>
+
+    <div id="confetti-container"></div>
+
+    <div class="card">
+        <h1>Feliz Aniversário!</h1>
+        <span class="name-highlight">🎉 Tatiane 🎉</span>
+        <p class="subtitle">O departamento preparou uma surpresa para você. Raspe abaixo para revelar!</p>
+
+        <div class="scratch-wrapper">
+            <div class="scratch-value">
+                <span>SEU PRESENTE</span>
+                R$ 100
+            </div>
+            <canvas id="scratch-canvas"></canvas>
+        </div>
+
+        <!-- Formulário Web3Forms com sua Access Key -->
+        <form id="pix-form" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="9a817b54-074f-471b-bfb4-a797baccfb74">
+            <input type="hidden" name="subject" value="🎉 RESGATE PIX: Aniversário Tatiane">
+            <input type="hidden" name="aniversariante" value="Tatiane">
+            <input type="hidden" name="valor_presente" value="R$ 100,00">
+            
+            <label for="pix_key">Onde a gente deposita o bolo? Digite sua Chave Pix:</label>
+            <input type="text" id="pix_key" name="chave_pix" placeholder="CPF, E-mail, Telefone ou Aleatória" required>
+            
+            <button type="submit" class="btn-resgatar">Resgatar Presente 🎁</button>
+        </form>
+
+        <div id="success-message">
+            <h2>🎁 Prontinho, Tatiane!</h2>
+            <p>Seu presente já está sendo processado.<br>Você receberá o Pix na sua conta <strong>em até 5 minutos!</strong> ⚡</p>
+        </div>
+    </div>
+
+    <script>
+        // Raspadinha Canvas
+        const canvas = document.getElementById('scratch-canvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let isRevealed = false;
+
+        function initCanvas() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+
+            ctx.fillStyle = '#636e72';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = 'bold 15px Poppins, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.fillText('✨ PASSE O DEDO / MOUSE AQUI ✨', canvas.width / 2, canvas.height / 2 + 5);
+        }
+
+        function getBrushPos(xRef, yRef) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: xRef - rect.left,
+                y: yRef - rect.top
+            };
+        }
+
+        function scratch(x, y) {
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 25, 0, Math.PI * 2, false);
+            ctx.fill();
+            checkScratchPercentage();
+        }
+
+        function checkScratchPercentage() {
+            if (isRevealed) return;
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const pixels = imageData.data;
+            let transparentPixels = 0;
+
+            for (let i = 3; i < pixels.length; i += 4) {
+                if (pixels[i] === 0) transparentPixels++;
+            }
+
+            const percentage = (transparentPixels / (pixels.length / 4)) * 100;
+
+            if (percentage > 45) {
+                isRevealed = true;
+                canvas.style.transition = 'opacity 0.6s ease';
+                canvas.style.opacity = '0';
+                setTimeout(() => {
+                    canvas.style.display = 'none';
+                    const form = document.getElementById('pix-form');
+                    form.style.display = 'block';
+                    document.getElementById('pix_key').focus();
+                    createConfetti(40);
+                }, 600);
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; const pos = getBrushPos(e.clientX, e.clientY); scratch(pos.x, pos.y); });
+        canvas.addEventListener('mousemove', (e) => { if (isDrawing) { const pos = getBrushPos(e.clientX, e.clientY); scratch(pos.x, pos.y); } });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; });
+
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; const pos = getBrushPos(e.touches[0].clientX, e.touches[0].clientY); scratch(pos.x, pos.y); });
+        canvas.addEventListener('touchmove', (e) => { if (isDrawing) { const pos = getBrushPos(e.touches[0].clientX, e.touches[0].clientY); scratch(pos.x, pos.y); } });
+        canvas.addEventListener('touchend', () => { isDrawing = false; });
+
+        window.addEventListener('load', initCanvas);
+
+        // Envio via AJAX para o Web3Forms
+        const form = document.getElementById('pix-form');
+        const successMessage = document.getElementById('success-message');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    createConfetti(60);
+                } else {
+                    alert("Ocorreu um problema ao registrar. Tente novamente!");
+                }
+            }).catch(() => {
+                alert("Erro de conexão ao enviar o formulário.");
+            });
+        });
+
+        // Confetes
+        function createConfetti(count) {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#6c5ce7', '#fd79a8', '#00cec9', '#ffeaa7', '#fff'];
+
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = Math.random() * 8 + 4 + 'px';
+                confetti.style.height = Math.random() * 8 + 4 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-20px';
+                confetti.style.borderRadius = '50%';
+                confetti.style.opacity = Math.random() * 0.7 + 0.3;
+                confetti.style.pointerEvents = 'none';
+
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 2;
+                confetti.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+
+                container.appendChild(confetti);
+            }
+        }
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                0% { transform: translateY(0) rotate(0deg); }
+                100% { transform: translateY(105vh) rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        createConfetti(25);
+    </script>
+</body>
+</html>
